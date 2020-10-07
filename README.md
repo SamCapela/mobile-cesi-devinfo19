@@ -3,7 +3,6 @@
 ## Commit 1 : Projet squelette Typescript
 > npx react-native init MyApp --template react-native-template-typescript
 
-### 2. Commit et push sur GitHub le nouveau template React Native en TypeScript
 Initialiser le fichier .git
 > git init
 
