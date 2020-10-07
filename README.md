@@ -25,3 +25,4 @@ Installer le package react-native-cli
 
 Lancer l'application (depuis le dossier MyApp)
 >npm start
+

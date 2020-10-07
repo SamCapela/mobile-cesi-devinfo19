@@ -1,4 +1,4 @@
-package com.myapp;
+package com.sca;
 
 import com.facebook.react.ReactActivity;
 
