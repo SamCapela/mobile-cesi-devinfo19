@@ -7,16 +7,10 @@
  *
  * @format
  */
+import {RNCamera} from 'react-native-camera';
+import React, { PureComponent } from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View, Button} from 'react-native';
 
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
 
 import {
   Header,
@@ -28,55 +22,116 @@ import {
 
 declare const global: {HermesInternal: null | {}};
 
-const App = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
+class App extends React.Component{
+
+  camera : any;
+  public state = {
+    path : "home",
+    data : ""
+  }
+
+
+  home = () => {
+    return (
+      <>
+        <View style={style.container}>
+          <Button title="Prendre une photo" onPress={this.takePicture}/>
+          <Text>{this.state.path}</Text>
+        </View>
+      </>
+    );
+  }
+
+  gopicture = () => {
+    this.setState({path : "pict"});
+  }
+  
+  takePicture = async () => {
+    if (this.camera) {
+      
+      const options = { 
+        quality: 0.5,
+        base64: true
+        
+      
+      };
+      const data = await this.camera.takePictureAsync(options);
+      this.setState({data : data.uri})
+      console.log(data.uri);
+      this.setState({path: "home"});
+    }
+  };
+
+  render()
+  {
+    const {path} = this.state;
+    const {data} = this.state;
+    if(path == "home"){
+      return(
+        <>
+        <View style={style.center}>
+          {data != null && <Image
+                              style={styles.images}
+                              source = {{uri: data}}         
+                            />
+          }
+
+          {data != "" && <Text>URI: {data}</Text>}
+          {data == "" && <Text>Il n'y a pas de photo !</Text>}
+        </View>
+        <View style={style.container}>
+          
+          <Button title='Prendre une photo' onPress={this.gopicture}/>
+          
+        </View>
+      </>
+      );
+    }
+    if(path == "pict")
+    {
+      return (
+        <View style={styles.container}>
+          <RNCamera
+            ref={ref => {
+              this.camera = ref;
+            }}
+            style={styles.preview}
+            type={"back"}
+            flashMode={RNCamera.Constants.FlashMode.off}
+            androidCameraPermissionOptions={{
+              title: 'Permission to use camera',
+              message: 'We need your permission to use your camera',
+              buttonPositive: 'Ok',
+              buttonNegative: 'Cancel',
+            }}
+            androidRecordAudioPermissionOptions={{
+              title: 'Permission to use audio recording',
+              message: 'We need your permission to use your audio',
+              buttonPositive: 'Ok',
+              buttonNegative: 'Cancel',
+            }}
+            onGoogleVisionBarcodesDetected={({ barcodes }) => {
+              //console.log(barcodes);
+            }}
+          />
+          <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
+            <TouchableOpacity onPress={this.takePicture.bind(this)} style={styles.capture}>
+              <Text style={{ fontSize: 14 }}> SNAP </Text>
+            </TouchableOpacity>
           </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
+        </View>
+      );
+    }
+  }
+
+  
 };
 
 const styles = StyleSheet.create({
+  images : {
+    height: 300,
+    width: 300
+  },
   scrollView: {
     backgroundColor: Colors.lighter,
   },
@@ -113,6 +168,41 @@ const styles = StyleSheet.create({
     paddingRight: 12,
     textAlign: 'right',
   },
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: 'black',
+  },
+  preview: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  capture: {
+    flex: 0,
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    padding: 15,
+    paddingHorizontal: 20,
+    alignSelf: 'center',
+    margin: 20,
+  }
+});
+
+const style = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center'
+  },
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  text: {
+    fontSize: 30
+  }
 });
 
 export default App;

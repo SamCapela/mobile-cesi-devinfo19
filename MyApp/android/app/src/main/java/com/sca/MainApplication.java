@@ -1,4 +1,4 @@
-package com.myapp;
+package com.sca.app;
 
 import android.app.Application;
 import android.content.Context;
