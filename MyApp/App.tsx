@@ -10,6 +10,7 @@
 import {RNCamera} from 'react-native-camera';
 import React, { PureComponent } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View, Button} from 'react-native';
+import Share from 'react-native-share';
 
 
 import {
@@ -27,9 +28,12 @@ class App extends React.Component{
   camera : any;
   public state = {
     path : "home",
-    data : ""
+    data : "",
+    width: "",
+    height: ""
   }
 
+  
 
   home = () => {
     return (
@@ -40,6 +44,20 @@ class App extends React.Component{
         </View>
       </>
     );
+  }
+
+  shareEmail = () => {
+    const shareOptions = {
+      title: 'Share via',
+      url: this.state.data,
+      message: 'Contenu du message',
+      social: Share.Social.EMAIL,
+      filename: 'test' ,   
+    }
+
+    Share.shareSingle(shareOptions)
+    .then((res) => { console.log(res) })
+    .catch((err) => { err && console.log(err); });
   }
 
   gopicture = () => {
@@ -57,7 +75,10 @@ class App extends React.Component{
       };
       const data = await this.camera.takePictureAsync(options);
       this.setState({data : data.uri})
+      this.setState({height : data.height})
+      this.setState({width : data.width})
       console.log(data.uri);
+      
       this.setState({path: "home"});
     }
   };
@@ -66,6 +87,8 @@ class App extends React.Component{
   {
     const {path} = this.state;
     const {data} = this.state;
+    const {width} = this.state;
+    const {height} = this.state;
     if(path == "home"){
       return(
         <>
@@ -75,10 +98,17 @@ class App extends React.Component{
                               source = {{uri: data}}         
                             />
           }
-
-          {data != "" && <Text>URI: {data}</Text>}
-          {data == "" && <Text>Il n'y a pas de photo !</Text>}
+          
         </View>
+        <View style={{paddingTop:30, margin:10}}>
+          {data == "" && <Text style={{textAlign:"center"}}>Il n'y a pas de photo !</Text>}
+          {data != "" && <Text style={style.title}>URI: <Text style={style.content}>{data}</Text></Text>}
+          {data != "" && <Text style={style.title}>Width: <Text style={style.content}>{width}px</Text></Text>}
+          {data != "" && <Text style={style.title}>Height: <Text style={style.content}>{height}px</Text></Text>}
+
+          
+        </View>
+        {data != "" && <Button title='Partager par Email' onPress={this.shareEmail}/>}
         <View style={style.container}>
           
           <Button title='Prendre une photo' onPress={this.gopicture}/>
@@ -126,6 +156,8 @@ class App extends React.Component{
 
   
 };
+
+
 
 const styles = StyleSheet.create({
   images : {
@@ -180,7 +212,7 @@ const styles = StyleSheet.create({
   },
   capture: {
     flex: 0,
-    backgroundColor: '#fff',
+    backgroundColor: 'cyan',
     borderRadius: 5,
     padding: 15,
     paddingHorizontal: 20,
@@ -198,10 +230,19 @@ const style = StyleSheet.create({
   center: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
+    backgroundColor: 'gray'
   },
   text: {
     fontSize: 30
+  },
+  title: {
+    color: 'red'
+  },
+  content: {
+    color: 'black'
   }
 });
 

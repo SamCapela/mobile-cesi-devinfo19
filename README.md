@@ -40,3 +40,10 @@ Lancer l'application (depuis le dossier MyApp)
 >npm run android
 
 Grace à RNCamera, je peux maintenant prendre une photo, puis l'afficher dans une <Image><Image/> avec son URI.
+
+## Commit 4 : Utilisation de react-native-share
+Installer react-native-share
+>npm install react-native-share
+
+Mettre à jour le type de Share
+>npm install @types/react-native-share
