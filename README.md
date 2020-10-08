@@ -30,9 +30,13 @@ Lancer l'application (depuis le dossier MyApp)
 
 ## Commit 3 : Ajout de react-native-camera 
 >npm install react-native-camera --save
+
 >cd .. android/
+
 >gradlew clean
+
 >cd ..
+
 >npm run android
 
 Grace à RNCamera, je peux maintenant prendre une photo, puis l'afficher dans une <Image><Image/> avec son URI.
