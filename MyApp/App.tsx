@@ -20,6 +20,7 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import Home from './src/views/Home';
 
 declare const global: {HermesInternal: null | {}};
 
@@ -91,30 +92,15 @@ class App extends React.Component{
     const {height} = this.state;
     if(path == "home"){
       return(
-        <>
-        <View style={style.center}>
-          {data != null && <Image
-                              style={styles.images}
-                              source = {{uri: data}}         
-                            />
-          }
-          
-        </View>
-        <View style={{paddingTop:30, margin:10}}>
-          {data == "" && <Text style={{textAlign:"center"}}>Il n'y a pas de photo !</Text>}
-          {data != "" && <Text style={style.title}>URI: <Text style={style.content}>{data}</Text></Text>}
-          {data != "" && <Text style={style.title}>Width: <Text style={style.content}>{width}px</Text></Text>}
-          {data != "" && <Text style={style.title}>Height: <Text style={style.content}>{height}px</Text></Text>}
-
-          
-        </View>
-        {data != "" && <Button title='Partager par Email' onPress={this.shareEmail}/>}
-        <View style={style.container}>
-          
-          <Button title='Prendre une photo' onPress={this.gopicture}/>
-          
-        </View>
-      </>
+        
+          <Home 
+            data={data}
+            gopicture={this.gopicture}
+            width={width}
+            height={height}
+            shareEmail={this.shareEmail}
+          />
+        
       );
     }
     if(path == "pict")

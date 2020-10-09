@@ -10,6 +10,7 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@react-native-community/cli-platform-android": "^4.13.0",
     "@types/react-native-share": "^3.3.0",
     "react": "16.13.1",
     "react-native": "0.63.3",
