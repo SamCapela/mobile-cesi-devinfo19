@@ -1,5 +1,5 @@
 # mobile-cesi-devinfo19 : Projet d'application de partage de photos par mail
-
+APK disponible dans **android/app/build/outputs/apk/app-release.apk**
 ## Commit 1 : Projet squelette Typescript
 > npx react-native init MyApp --template react-native-template-typescript
 
