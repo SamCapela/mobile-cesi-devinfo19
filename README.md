@@ -47,3 +47,10 @@ Installer react-native-share
 
 Mettre à jour le type de Share
 >npm install @types/react-native-share
+
+## Commit 5 : Ajout du component Home pour alléger le code
+
+## Commandes utiles afin de supprimer tous les changements depuis le dernier commit : 
+>git log --oneline -1
+
+>git reset --hard
